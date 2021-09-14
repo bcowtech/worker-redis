@@ -53,5 +53,8 @@ func (h *Host) Init(conf *Config) {
 	h.MaxInFlight = conf.RedisMaxInFlight
 	h.MaxPollingTimeout = conf.RedisMaxPollingTimeout
 	h.AutoClaimMinIdleTime = conf.RedisAutoClaimMinIdleTime
+	h.IdlingTimeout = conf.RedisIdlingTimeout
+	h.ClaimSensitivity = conf.RedisClaimSensitivity
+	h.ClaimOccurrenceRate = conf.RedisClaimOccurrenceRate
 
 }
