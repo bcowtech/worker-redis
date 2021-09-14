@@ -4,3 +4,6 @@ RedisConsumerName: gotestConsumer
 RedisMaxInFlight: 8
 RedisMaxPollingTimeout: 10ms
 RedisAutoClaimMinIdleTime: 30s
+RedisIdlingTimeout: 150ms
+RedisClaimSensitivity: 2
+RedisClaimOccurrenceRate: 2

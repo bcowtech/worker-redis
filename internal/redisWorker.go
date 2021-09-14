@@ -19,6 +19,9 @@ type RedisWorker struct {
 	MaxInFlight          int64
 	MaxPollingTimeout    time.Duration
 	AutoClaimMinIdleTime time.Duration
+	IdlingTimeout        time.Duration // 若沒有任何訊息時等待多久
+	ClaimSensitivity     int           // Read 時取得的訊息數小於等於 n 的話, 執行 Claim
+	ClaimOccurrenceRate  int32         // Read 每執行 n 次後 執行 Claim 1 次
 
 	consumer *redis.Consumer
 
@@ -111,6 +114,9 @@ func (w *RedisWorker) configConsumer() {
 		MaxInFlight:             w.MaxInFlight,
 		MaxPollingTimeout:       w.MaxPollingTimeout,
 		AutoClaimMinIdleTime:    w.AutoClaimMinIdleTime,
+		IdlingTimeout:           w.IdlingTimeout,
+		ClaimSensitivity:        w.ClaimSensitivity,
+		ClaimOccurrenceRate:     w.ClaimOccurrenceRate,
 		ErrorHandler:            w.dispatcher.ProcessRedisError,
 		MessageHandler:          w.dispatcher.ProcessMessage,
 		UnhandledMessageHandler: w.dispatcher.ProcessUnhandledMessage,

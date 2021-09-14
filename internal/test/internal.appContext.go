@@ -24,6 +24,9 @@ type (
 		RedisMaxInFlight          int64         `env:"-"                    yaml:"RedisMaxInFlight"`
 		RedisMaxPollingTimeout    time.Duration `env:"-"                    yaml:"RedisMaxPollingTimeout"`
 		RedisAutoClaimMinIdleTime time.Duration `env:"-"                    yaml:"RedisAutoClaimMinIdleTime"`
+		RedisIdlingTimeout        time.Duration `env:"-"                    yaml:"RedisIdlingTimeout"`
+		RedisClaimSensitivity     int           `env:"-"                    yaml:"RedisClaimSensitivity"`
+		RedisClaimOccurrenceRate  int32         `env:"-"                    yaml:"RedisClaimOccurrenceRate"`
 	}
 
 	ServiceProvider struct {
@@ -50,4 +53,5 @@ func (h *Host) Init(conf *Config) {
 	h.MaxInFlight = conf.RedisMaxInFlight
 	h.MaxPollingTimeout = conf.RedisMaxPollingTimeout
 	h.AutoClaimMinIdleTime = conf.RedisAutoClaimMinIdleTime
+
 }
