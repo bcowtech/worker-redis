@@ -6,6 +6,7 @@ import (
 
 	"github.com/bcowtech/host"
 	"github.com/bcowtech/structproto"
+	"github.com/bcowtech/structproto/tagresolver"
 	"github.com/bcowtech/structproto/util/reflectutil"
 	"github.com/bcowtech/worker-redis/internal"
 )
@@ -52,8 +53,8 @@ func (b *StreamGatewayBinder) Deinit(context *structproto.StructProtoContext) er
 
 func (b *StreamGatewayBinder) preformBindMessageHandler(target reflect.Value, binder *MessageHandlerBinder) error {
 	prototype, err := structproto.Prototypify(target,
-		&structproto.StructProtoOption{
-			TagResolver: NoneTagResolver,
+		&structproto.StructProtoResolveOption{
+			TagResolver: tagresolver.NoneTagResolver,
 		})
 	if err != nil {
 		return err

@@ -33,7 +33,7 @@ func (m *StreamGatewayMiddleware) Init(appCtx *host.AppContext) {
 
 func (m *StreamGatewayMiddleware) performBindTopicGateway(target interface{}, binder *StreamGatewayBinder) error {
 	prototype, err := structproto.Prototypify(target,
-		&structproto.StructProtoOption{
+		&structproto.StructProtoResolveOption{
 			TagName:     TAG_STREAM,
 			TagResolver: StreamTagResolve,
 		},

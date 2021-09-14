@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/bcowtech/config"
-	"github.com/bcowtech/host"
 	redis "github.com/bcowtech/worker-redis"
 )
 
@@ -24,14 +23,14 @@ func TestStarter(t *testing.T) {
 	}()
 
 	app := App{}
-	starter := redis.Startup(&app,
-		[]host.Middleware{
+	starter := redis.Startup(&app).
+		Middlewares(
 			redis.UseStreamGateway(&StreamGateway{}),
 			redis.UseErrorHandler(func(err error) (disposed bool) {
 				t.Logf("catch err: %v", err)
 				return false
 			}),
-		}...).
+		).
 		ConfigureConfiguration(func(service *config.ConfigurationService) {
 			service.
 				LoadEnvironmentVariables("").
