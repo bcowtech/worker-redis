@@ -6,9 +6,10 @@ import (
 )
 
 const (
-	AutoIncrement    = redis.AutoIncrement
-	LastStreamOffset = redis.LastStreamOffset
-	NextStreamOffset = redis.NextStreamOffset
+	AutoIncrement        = redis.AutoIncrement
+	LastStreamOffset     = redis.LastStreamOffset
+	NextStreamOffset     = redis.NextStreamOffset
+	StartingStreamOffset = redis.StartingStreamOffset
 )
 
 type (

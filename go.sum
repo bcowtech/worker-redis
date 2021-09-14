@@ -4,8 +4,8 @@ github.com/bcowtech/config v0.1.0 h1:xZxGL+yxwFKK0PRttSURcpUhJ/3XjCkq8BLsGk6la8Y
 github.com/bcowtech/config v0.1.0/go.mod h1:wQtzgnP4pEpsv4xzBasB05i1AxYY03XL7trrSCHfAxM=
 github.com/bcowtech/host v0.1.0 h1:HRlkEe0K45h09HBFbBChYNaLiXs94ag8zbPNkaG883s=
 github.com/bcowtech/host v0.1.0/go.mod h1:l490ZiWviW2s0wu4T7f4Eg2EM88mPnxRZgpKwF0j3Go=
-github.com/bcowtech/lib-redis-stream v0.1.2 h1:PfWB74+XubJsg3SG1XIQHwwMxM73lF3GPeV0rpA/vU0=
-github.com/bcowtech/lib-redis-stream v0.1.2/go.mod h1:7rekQbCeoVaCpshgch6oc07Tkpz2xnoK82BStENWKCY=
+github.com/bcowtech/lib-redis-stream v0.1.4 h1:TtAXmQdAQgh3TXZiseiwP+LKJem+r0WBm68lSFpN62g=
+github.com/bcowtech/lib-redis-stream v0.1.4/go.mod h1:7rekQbCeoVaCpshgch6oc07Tkpz2xnoK82BStENWKCY=
 github.com/bcowtech/structproto v0.1.0 h1:bw5OIBI6Jhu+J518km2zy0EuDpjLf+dcgUyCPS7L35Y=
 github.com/bcowtech/structproto v0.1.0/go.mod h1:CvSLrBUwPAKwj2Eqrbyx5rNK6Lrl+lhUGedf4VKxZI8=
 github.com/cstockton/go-conv v0.0.0-20170524002450-66a2b2ba36e1 h1:h4OgDocdYHGiUh+zUEe4nFlb9ShoHUllqDefGaRoZFg=
@@ -15,8 +15,9 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/fsnotify/fsnotify v1.4.7 h1:IXs+QLmnXW2CcXuY+8Mzv/fWEsPGWxqefPtCP5CnV9I=
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
-github.com/go-redis/redis/v7 v7.4.0 h1:7obg6wUoj05T0EpY0o8B59S9w5yeMWql7sw2kwNW1x4=
 github.com/go-redis/redis/v7 v7.4.0/go.mod h1:JDNMw23GTyLNC4GZu9njt15ctBQVn7xjRfnwdHj/Dcg=
+github.com/go-redis/redis/v7 v7.4.1 h1:PASvf36gyUpr2zdOUS/9Zqc80GbM+9BDyiJSJDDOrTI=
+github.com/go-redis/redis/v7 v7.4.1/go.mod h1:JDNMw23GTyLNC4GZu9njt15ctBQVn7xjRfnwdHj/Dcg=
 github.com/golang/protobuf v1.2.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
 github.com/golang/protobuf v1.3.2 h1:6nsPYzhq5kReh6QImI3k5qWzO4PEbvbIW2cwSfR/6xs=
 github.com/golang/protobuf v1.3.2/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
