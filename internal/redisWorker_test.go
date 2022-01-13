@@ -23,25 +23,25 @@ func TestRedisWorker(t *testing.T) {
 		}
 	}()
 
-	opt := redis.Options{
-		Addr: os.Getenv("REDIS_SERVER"),
-		DB:   0,
+	opt := redis.UniversalOptions{
+		Addrs: []string{os.Getenv("REDIS_SERVER")},
+		DB:    0,
 	}
 
 	worker := &RedisWorker{
-		ConsumerGroup:        "gotestGroup",
-		ConsumerName:         "gotestConsumer",
-		RedisOption:          &opt,
-		MaxInFlight:          8,
-		MaxPollingTimeout:    10 * time.Millisecond,
-		AutoClaimMinIdleTime: 30 * time.Millisecond,
+		ConsumerGroup:     "gotestGroup",
+		ConsumerName:      "gotestConsumer",
+		RedisOption:       &opt,
+		MaxInFlight:       8,
+		MaxPollingTimeout: 10 * time.Millisecond,
+		ClaimMinIdleTime:  30 * time.Millisecond,
 	}
 
 	worker.preInit()
 	{
 		worker.dispatcher.streams["gotestStream"] = StreamOffset{
 			Stream: "gotestStream",
-			Offset: redis.NextStreamOffset,
+			Offset: redis.StreamNeverDeliveredOffset,
 		}
 		worker.dispatcher.router.Add("gotestStream", new(mockMessageHandler))
 	}
@@ -65,9 +65,9 @@ func (h *mockMessageHandler) ProcessMessage(ctx *ConsumeContext, stream string, 
 }
 
 func setupTestRedisWorker() error {
-	opt := &redis.Options{
-		Addr: os.Getenv("REDIS_SERVER"),
-		DB:   0,
+	opt := &redis.UniversalOptions{
+		Addrs: []string{os.Getenv("REDIS_SERVER")},
+		DB:    0,
 	}
 
 	admin, err := redis.NewAdminClient(opt)
@@ -91,7 +91,7 @@ func setupTestRedisWorker() error {
 			XADD gotestStream * name luffy age 19
 			XADD gotestStream * name nami age 21
 		*/
-		_, err = admin.CreateConsumerGroupAndStream("gotestStream", "gotestGroup", redis.LastStreamOffset)
+		_, err = admin.CreateConsumerGroupAndStream("gotestStream", "gotestGroup", redis.StreamLastDeliveredID)
 		if err != nil {
 			return err
 		}
@@ -102,14 +102,14 @@ func setupTestRedisWorker() error {
 		}
 		defer p.Close()
 
-		_, err = p.Write("gotestStream", redis.AutoIncrement, map[string]interface{}{
+		_, err = p.Write("gotestStream", redis.StreamAsteriskID, map[string]interface{}{
 			"name": "luffy",
 			"age":  19,
 		})
 		if err != nil {
 			return err
 		}
-		_, err = p.Write("gotestStream", redis.AutoIncrement, map[string]interface{}{
+		_, err = p.Write("gotestStream", redis.StreamAsteriskID, map[string]interface{}{
 			"name": "nami",
 			"age":  21,
 		})
@@ -121,9 +121,9 @@ func setupTestRedisWorker() error {
 }
 
 func teardownTestRedisWorker() error {
-	admin, err := redis.NewAdminClient(&redis.Options{
-		Addr: os.Getenv("REDIS_SERVER"),
-		DB:   0,
+	admin, err := redis.NewAdminClient(&redis.UniversalOptions{
+		Addrs: []string{os.Getenv("REDIS_SERVER")},
+		DB:    0,
 	})
 	if err != nil {
 		return err

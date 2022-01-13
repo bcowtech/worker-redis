@@ -3,6 +3,7 @@ package standardtest
 import (
 	"context"
 	"os"
+	"reflect"
 	"testing"
 	"time"
 
@@ -36,6 +37,8 @@ func TestStarter(t *testing.T) {
 				LoadEnvironmentVariables("").
 				LoadYamlFile("config.yaml").
 				LoadCommandArguments()
+
+			t.Logf("%+v\n", app.Config)
 		})
 
 	runCtx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
@@ -54,8 +57,9 @@ func TestStarter(t *testing.T) {
 	// assert app.Config
 	{
 		conf := app.Config
-		if conf.RedisAddress == "" {
-			t.Errorf("assert 'Config.RedisAddress':: should not be an empty string")
+		var expectedRedisAddresses []string = []string{"192.168.56.51:6379"}
+		if !reflect.DeepEqual(conf.RedisAddresses, expectedRedisAddresses) {
+			t.Errorf("assert 'Config.RedisAddress':: expected '%v', got '%v'", expectedRedisAddresses, conf.RedisAddresses)
 		}
 		var expectedRedisConsumerGroup string = "gotestGroup"
 		if conf.RedisConsumerGroup != expectedRedisConsumerGroup {
@@ -73,17 +77,17 @@ func TestStarter(t *testing.T) {
 		if conf.RedisMaxPollingTimeout != expectedRedisMaxPollingTimeout {
 			t.Errorf("assert 'Config.RedisMaxPollingTimeout':: expected '%v', got '%v'", expectedRedisMaxPollingTimeout, conf.RedisMaxPollingTimeout)
 		}
-		var expectedRedisAutoClaimMinIdleTime time.Duration = 30 * time.Second
-		if conf.RedisAutoClaimMinIdleTime != expectedRedisAutoClaimMinIdleTime {
-			t.Errorf("assert 'Config.RedisAutoClaimMinIdleTime':: expected '%v', got '%v'", expectedRedisAutoClaimMinIdleTime, conf.RedisAutoClaimMinIdleTime)
+		var expectedRedisClaimMinIdleTime time.Duration = 30 * time.Second
+		if conf.RedisClaimMinIdleTime != expectedRedisClaimMinIdleTime {
+			t.Errorf("assert 'Config.RedisClaimMinIdleTime':: expected '%v', got '%v'", expectedRedisClaimMinIdleTime, conf.RedisClaimMinIdleTime)
 		}
 	}
 }
 
 func setupTestStarter() error {
-	opt := &redis.Options{
-		Addr: os.Getenv("REDIS_SERVER"),
-		DB:   0,
+	opt := &redis.UniversalOptions{
+		Addrs: []string{os.Getenv("REDIS_SERVER")},
+		DB:    0,
 	}
 
 	admin, err := redis.NewAdminClient(opt)
@@ -108,7 +112,7 @@ func setupTestStarter() error {
 			XADD gotestStream * name nami age 21
 
 		*/
-		_, err = admin.CreateConsumerGroupAndStream("gotestStream", "gotestGroup", redis.LastStreamOffset)
+		_, err = admin.CreateConsumerGroupAndStream("gotestStream", "gotestGroup", redis.StreamLastDeliveredID)
 		if err != nil {
 			return err
 		}
@@ -119,14 +123,14 @@ func setupTestStarter() error {
 		}
 		defer p.Close()
 
-		_, err = p.Write("gotestStream", redis.AutoIncrement, map[string]interface{}{
+		_, err = p.Write("gotestStream", redis.StreamAsteriskID, map[string]interface{}{
 			"name": "luffy",
 			"age":  19,
 		})
 		if err != nil {
 			return err
 		}
-		_, err = p.Write("gotestStream", redis.AutoIncrement, map[string]interface{}{
+		_, err = p.Write("gotestStream", redis.StreamAsteriskID, map[string]interface{}{
 			"name": "nami",
 			"age":  21,
 		})
@@ -138,9 +142,9 @@ func setupTestStarter() error {
 }
 
 func teardownTestStarter() error {
-	admin, err := redis.NewAdminClient(&redis.Options{
-		Addr: os.Getenv("REDIS_SERVER"),
-		DB:   0,
+	admin, err := redis.NewAdminClient(&redis.UniversalOptions{
+		Addrs: []string{os.Getenv("REDIS_SERVER")},
+		DB:    0,
 	})
 	if err != nil {
 		return err

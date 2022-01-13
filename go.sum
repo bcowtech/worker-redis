@@ -3,8 +3,8 @@ github.com/bcowtech/config v0.2.0 h1:Rvh7coRLlFHTaklmu5Hxyy3nLQiVSyM78BIPyoMx9Q8
 github.com/bcowtech/config v0.2.0/go.mod h1:vQ+TT3DyHZ+tBKal9XQv06zHjdkvh67VxFou1oH5Bto=
 github.com/bcowtech/host v0.2.0 h1:TjRzU3cAWdeLrVKPUGZRCn9egaxTZDepA6HUXiwZDAc=
 github.com/bcowtech/host v0.2.0/go.mod h1:x93o8v43ORwHGB2Ltp9OeBSprTkO2/+TRHqybVpo6ow=
-github.com/bcowtech/lib-redis-stream v0.1.4 h1:TtAXmQdAQgh3TXZiseiwP+LKJem+r0WBm68lSFpN62g=
-github.com/bcowtech/lib-redis-stream v0.1.4/go.mod h1:7rekQbCeoVaCpshgch6oc07Tkpz2xnoK82BStENWKCY=
+github.com/bcowtech/lib-redis-stream v0.2.0 h1:jJkN+YfgXfUtaDEfC6MJBDiX9a8BS7pKS7uduEh7W/U=
+github.com/bcowtech/lib-redis-stream v0.2.0/go.mod h1:7rekQbCeoVaCpshgch6oc07Tkpz2xnoK82BStENWKCY=
 github.com/bcowtech/structproto v0.2.0 h1:zEcriVFoPnJNZyySz4Q39oKTMhDNO+9/ZEqBSpsTc4c=
 github.com/bcowtech/structproto v0.2.0/go.mod h1:E8f3zYlTM+nAs82xAKmzP60+zsEhXecIxjlTW28uIg4=
 github.com/bcowtech/types v0.1.0 h1:MrUadVmRc22FL3VUWQyX9Ytzia7zKgD+FsxApmBDJ44=

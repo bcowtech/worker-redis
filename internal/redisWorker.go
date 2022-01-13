@@ -13,15 +13,15 @@ import (
 var _ host.Host = new(RedisWorker)
 
 type RedisWorker struct {
-	ConsumerGroup        string
-	ConsumerName         string
-	RedisOption          *redis.Options
-	MaxInFlight          int64
-	MaxPollingTimeout    time.Duration
-	AutoClaimMinIdleTime time.Duration
-	IdlingTimeout        time.Duration // 若沒有任何訊息時等待多久
-	ClaimSensitivity     int           // Read 時取得的訊息數小於等於 n 的話, 執行 Claim
-	ClaimOccurrenceRate  int32         // Read 每執行 n 次後 執行 Claim 1 次
+	ConsumerGroup       string
+	ConsumerName        string
+	RedisOption         *redis.UniversalOptions
+	MaxInFlight         int64
+	MaxPollingTimeout   time.Duration
+	ClaimMinIdleTime    time.Duration
+	IdlingTimeout       time.Duration // 若沒有任何訊息時等待多久
+	ClaimSensitivity    int           // Read 時取得的訊息數小於等於 n 的話, 執行 Claim
+	ClaimOccurrenceRate int32         // Read 每執行 n 次後 執行 Claim 1 次
 
 	consumer *redis.Consumer
 
@@ -67,7 +67,7 @@ func (w *RedisWorker) Start(ctx context.Context) {
 		w.ConsumerGroup,
 		w.RedisOption.DB,
 		strings.Join(streams, ","),
-		w.RedisOption.Addr)
+		w.RedisOption.Addrs)
 
 	if len(streamOffsets) > 0 {
 		c := w.consumer
@@ -113,7 +113,7 @@ func (w *RedisWorker) configConsumer() {
 		RedisOption:             w.RedisOption,
 		MaxInFlight:             w.MaxInFlight,
 		MaxPollingTimeout:       w.MaxPollingTimeout,
-		AutoClaimMinIdleTime:    w.AutoClaimMinIdleTime,
+		ClaimMinIdleTime:        w.ClaimMinIdleTime,
 		IdlingTimeout:           w.IdlingTimeout,
 		ClaimSensitivity:        w.ClaimSensitivity,
 		ClaimOccurrenceRate:     w.ClaimOccurrenceRate,

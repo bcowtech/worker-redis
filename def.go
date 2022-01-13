@@ -6,16 +6,17 @@ import (
 )
 
 const (
-	AutoIncrement        = redis.AutoIncrement
-	LastStreamOffset     = redis.LastStreamOffset
-	NextStreamOffset     = redis.NextStreamOffset
-	StartingStreamOffset = redis.StartingStreamOffset
+	StreamAsteriskID           = redis.StreamAsteriskID
+	StreamLastDeliveredID      = redis.StreamLastDeliveredID
+	StreamZeroID               = redis.StreamZeroID
+	StreamZeroOffset           = redis.StreamZeroOffset
+	StreamNeverDeliveredOffset = redis.StreamNeverDeliveredOffset
 )
 
 type (
-	Options  = redis.Options
-	XMessage = redis.XMessage
-	XStream  = redis.XStream
+	UniversalOptions = redis.UniversalOptions
+	XMessage         = redis.XMessage
+	XStream          = redis.XStream
 
 	AdminClient     = redis.AdminClient
 	Forwarder       = redis.Forwarder
