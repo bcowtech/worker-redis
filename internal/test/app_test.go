@@ -57,7 +57,7 @@ func TestStarter(t *testing.T) {
 	// assert app.Config
 	{
 		conf := app.Config
-		var expectedRedisAddresses []string = []string{"192.168.56.51:6379"}
+		var expectedRedisAddresses []string = []string{os.Getenv("REDIS_SERVER")}
 		if !reflect.DeepEqual(conf.RedisAddresses, expectedRedisAddresses) {
 			t.Errorf("assert 'Config.RedisAddress':: expected '%v', got '%v'", expectedRedisAddresses, conf.RedisAddresses)
 		}

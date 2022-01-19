@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"os"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -37,13 +38,14 @@ func TestRedisWorker(t *testing.T) {
 		ClaimMinIdleTime:  30 * time.Millisecond,
 	}
 
+	handler := new(mockMessageHandler)
 	worker.preInit()
 	{
 		worker.dispatcher.streams["gotestStream"] = StreamOffset{
 			Stream: "gotestStream",
 			Offset: redis.StreamNeverDeliveredOffset,
 		}
-		worker.dispatcher.router.Add("gotestStream", new(mockMessageHandler))
+		worker.dispatcher.router.Add("gotestStream", handler)
 	}
 	worker.init()
 
@@ -52,16 +54,24 @@ func TestRedisWorker(t *testing.T) {
 
 	select {
 	case <-ctx.Done():
+		var expectedMsgCnt int32 = 2
+		if handler.msgCnt != expectedMsgCnt {
+			t.Errorf("expect %d messages, but got %d messages", expectedMsgCnt, handler.msgCnt)
+		}
 		worker.Stop(context.Background())
 		break
 	}
 }
 
-type mockMessageHandler struct{}
+type mockMessageHandler struct {
+	msgCnt int32
+}
 
 func (h *mockMessageHandler) ProcessMessage(ctx *ConsumeContext, stream string, message *XMessage) {
 	log.Printf("Message on %s: %v\n", stream, message)
 	ctx.Ack(stream, message.ID)
+
+	atomic.AddInt32(&h.msgCnt, 1)
 }
 
 func setupTestRedisWorker() error {
